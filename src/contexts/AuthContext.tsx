@@ -1,40 +1,23 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import type { User } from "@supabase/supabase-js";
+import { createContext, useContext, useState } from "react";
 
 type AuthContextType = {
-  user: any;
-  authenticate: () => void;
-  logout: () => void;
+  user: User | null;
+  authenticated: (user: User) => void;
+  signOut: () => void;
+  token?: string;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch {
-        localStorage.removeItem("user");
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
-    } else {
-      localStorage.removeItem("user");
-    }
-  }, [user]);
-
-  const authenticate = () => setUser(user);
-  const logout = () => setUser(null);
+  const authenticated = (user: User) => setUser(user);
+  const signOut = () => setUser(null);
 
   return (
-    <AuthContext.Provider value={{ user, authenticate, logout }}>
+    <AuthContext.Provider value={{ user, authenticated, signOut }}>
       {children}
     </AuthContext.Provider>
   );

@@ -2,6 +2,8 @@ import { createBrowserRouter } from "react-router";
 import App from "../App";
 import { PublicRoute } from "../components/PublicRoute";
 import { ProtectedRoute } from "../components/ProtectedRoute";
+import SignInPage from "@/pages/SignInPage";
+import SignUpPage from "@/pages/SignUpPage";
 
 const router = createBrowserRouter([
   {
@@ -12,9 +14,9 @@ const router = createBrowserRouter([
         path: "/",
         element: <PublicRoute />,
         children: [
-          // { index: true, element: <LoginPage /> },
-          // { path: "login", element: <LoginPage /> },
-          // { path: "register", element: <RegisterPage /> },
+          { index: true, element: <SignInPage /> },
+          { path: "signin", element: <SignInPage /> },
+          { path: "signup", element: <SignUpPage /> },
         ],
       },
 
