@@ -11,7 +11,6 @@ export async function uploadAvatar(userId: string, avatarFile: File | null) {
     .upload(fileName, avatarFile, { upsert: true });
 
   if (error) {
-    console.error("Avatar upload error:", error.message);
     return null;
   }
 
@@ -25,35 +24,35 @@ export async function signUp(
   avatarFile: File | null,
   avatarUrl: string | null
 ) {
-  try {
-    const { data: authData, error: authError } = await supabase.auth.signUp({
-      email: data.email,
-      password: data.password,
-      options: {
-        data: {
-          full_name: data.first_name + " " + data.last_name,
-          username: data.username,
-          avatarUrl: avatarUrl,
-        },
+  const { data: authData, error: authError } = await supabase.auth.signUp({
+    email: data.email,
+    password: data.password,
+    options: {
+      data: {
+        full_name: data.first_name + " " + data.last_name,
+        username: data.username,
+        avatarUrl: avatarUrl,
       },
-    });
-    if (authError) throw authError;
+    },
+  });
 
-    const userId = authData.user?.id;
-    if (!userId) throw new Error("User ID not found");
+  if (authError) throw authError;
 
-    const avatar_url = await uploadAvatar(userId, avatarFile);
+  const userId = authData.user?.id;
+  if (!userId) throw new Error("User ID not found");
 
-    await supabase.auth.updateUser({ data: { avatarUrl: avatar_url } });
+  const avatar_url = await uploadAvatar(userId, avatarFile);
 
-    console.log("Profile created successfully");
-    if (authData.user) {
-      authenticated(authData.user);
-      console.log("User signed in context:", authData.user);
-    }
-  } catch (err) {
-    console.error(err);
+  const { error: updateError } = await supabase.auth.updateUser({
+    data: { avatarUrl: avatar_url },
+  });
+  if (updateError) throw updateError;
+
+  if (authData.user) {
+    authenticated(authData.user);
   }
+
+  return authData.user;
 }
 
 export async function signInWithGoogle(authenticated: (user: User) => void) {
