@@ -54,16 +54,47 @@ export async function signUp(
 
   return authData.user;
 }
-
-export async function signInWithGoogle(authenticated: (user: User) => void) {
-  await supabase.auth.signInWithOAuth({
-    provider: "google",
+export async function signInWithEmail(
+  {
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  },
+  authenticated: (user: User) => void
+): Promise<User | null> {
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
   });
 
-  const { data } = await supabase.auth.getSession();
+  if (error) throw error;
 
-  if (data.session?.user) {
-    authenticated(data.session.user);
+  if (data.user) {
+    authenticated(data.user); // ← هنا بيعمل set للـ user في AuthContext
+    return data.user;
   }
-  return data.session?.user || null;
+
+  return null;
+}
+
+export async function signInWithGoogle(authenticated?: (user: User) => void) {
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+  });
+  if (error) throw error;
+
+  const {
+    data: { session },
+    error: sessionError,
+  } = await supabase.auth.getSession();
+
+  if (sessionError) throw sessionError;
+
+  if (session?.user) {
+    authenticated?.(session.user);
+    return session.user;
+  }
+  return null;
 }

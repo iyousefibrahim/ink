@@ -4,6 +4,7 @@ import { PublicRoute } from "../components/PublicRoute";
 import { ProtectedRoute } from "../components/ProtectedRoute";
 import SignInPage from "@/pages/SignInPage";
 import SignUpPage from "@/pages/SignUpPage";
+import HomePage from "@/pages/HomePage";
 
 const router = createBrowserRouter([
   {
@@ -26,7 +27,7 @@ const router = createBrowserRouter([
         element: <ProtectedRoute />,
         children: [
           // { index: true, element: <HomePage /> },
-          // { path: "home", element: <HomePage /> },
+          { path: "home", element: <HomePage /> },
           // { path: "profile", element: <ProfilePage /> },
         ],
       },
