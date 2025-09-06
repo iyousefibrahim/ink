@@ -10,7 +10,7 @@ import { Loader2, Eye, EyeOff } from "lucide-react";
 import { Link } from "react-router";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signInSchema } from "../../validations/signInSchema"; 
+import { signInSchema } from "../../validations/signInSchema";
 import useSignIn from "../../hooks/useSignIn";
 import SignWithGoogle from "../SignWithGoogle";
 import { signInWithGoogle } from "../../apis/auth-api";

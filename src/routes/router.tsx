@@ -5,6 +5,7 @@ import { ProtectedRoute } from "../components/ProtectedRoute";
 import SignInPage from "@/pages/SignInPage";
 import SignUpPage from "@/pages/SignUpPage";
 import HomePage from "@/pages/HomePage";
+import NotFoundPage from "@/pages/NotFoundPage";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,7 @@ const router = createBrowserRouter([
         ],
       },
     ],
+    errorElement: <NotFoundPage />,
   },
 ]);
 

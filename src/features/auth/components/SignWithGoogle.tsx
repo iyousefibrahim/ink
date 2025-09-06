@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 function SignWithGoogle({ onClick }: { onClick: () => Promise<void> }) {
   return (
     <Button
+      type="button"
       onClick={onClick}
       variant="outline"
       className="w-full flex items-center justify-center gap-2"
