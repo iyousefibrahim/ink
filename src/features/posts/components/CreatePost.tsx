@@ -2,28 +2,37 @@ import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Image, X } from "lucide-react";
 import useCreatePost from "../hooks/useCreatePost";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
 
 export default function CreatePost() {
   const [content, setContent] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { mutate, isPending } = useCreatePost();
+  const { user } = useAuth();
 
   const handlePost = (e: React.FormEvent) => {
     e.preventDefault();
     if (!content.trim()) return;
 
+    if (!user?.id) {
+      toast.error("You must be logged in");
+      return;
+    }
+
     mutate({
-      post: { content },
+      post: {
+        content,
+        user_id: user.id,
+      },
       imageFile: selectedFile,
     });
 
     setContent("");
     setSelectedFile(null);
 
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,8 +49,8 @@ export default function CreatePost() {
   };
 
   return (
-    <div className="flex justify-center mt-6 px-4">
-      <div className="w-full max-w-xl">
+    <div className="flex justify-center mt-6 ">
+      <div className="md:w-[50%] w-full">
         <div className="bg-white dark:bg-gray-900 rounded-xl shadow-md border border-gray-100 dark:border-gray-800 overflow-hidden transition-all duration-300 hover:shadow-lg">
           <div className="p-4 space-y-3">
             <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100">

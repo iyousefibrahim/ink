@@ -7,11 +7,9 @@ export function useSignUp() {
     mutationFn: ({
       data,
       avatarFile,
-      avatarUrl,
     }: {
       data: SignUpInputs;
       avatarFile: File | null;
-      avatarUrl: string | null;
-    }) => signUp(data, () => {}, avatarFile, avatarUrl),
+    }) => signUp(data, () => {}, avatarFile),
   });
 }

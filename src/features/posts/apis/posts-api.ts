@@ -1,7 +1,11 @@
 import supabase from "@/lib/supabaseClient";
 import type { postInput } from "../types";
 
-export async function createPost(post: postInput, imageFile: File | null) {
+export async function createPost(
+  post: postInput,
+  imageFile: File | null,
+  user_id: string
+) {
   try {
     if (imageFile) {
       const { data: imageData, error: imageError } = await supabase.storage
@@ -15,7 +19,7 @@ export async function createPost(post: postInput, imageFile: File | null) {
 
       post.image_url = urlData.publicUrl;
     }
-
+    post.user_id = user_id;
     const { data: postData, error: postError } = await supabase
       .from("posts")
       .insert([post]);

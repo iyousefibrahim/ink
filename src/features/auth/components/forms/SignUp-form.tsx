@@ -6,7 +6,6 @@ import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Camera, Loader2, Upload, User, Eye, EyeOff } from "lucide-react";
-import { Link } from "react-router";
 import { useAuth } from "@/contexts/AuthContext";
 import { useSignUp } from "../../hooks/useSignUp";
 import { signInWithGoogle } from "../../apis/auth-api";
@@ -48,7 +47,7 @@ export function SignUpForm({
 
   async function onSubmit(data: SignUpInputs) {
     mutate(
-      { data, avatarFile, avatarUrl },
+      { data, avatarFile },
       {
         onSuccess: (user) => {
           toast.success(
