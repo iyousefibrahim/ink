@@ -6,6 +6,8 @@ import SignInPage from "@/pages/SignInPage";
 import SignUpPage from "@/pages/SignUpPage";
 import HomePage from "@/pages/HomePage";
 import NotFoundPage from "@/pages/NotFoundPage";
+import ForgotPasswordPage from "@/pages/ForgotPasswordPage";
+import ResetPasswordPage from "@/pages/ResetPasswordPage";
 
 const router = createBrowserRouter([
   {
@@ -19,8 +21,11 @@ const router = createBrowserRouter([
           { index: true, element: <SignInPage /> },
           { path: "signin", element: <SignInPage /> },
           { path: "signup", element: <SignUpPage /> },
+          { path: "forgot-password", element: <ForgotPasswordPage /> },
         ],
       },
+
+      { path: "reset-password", element: <ResetPasswordPage /> },
 
       // Protected routes
       {
@@ -29,6 +34,7 @@ const router = createBrowserRouter([
         children: [
           // { index: true, element: <HomePage /> },
           { path: "home", element: <HomePage /> },
+
           // { path: "profile", element: <ProfilePage /> },
         ],
       },

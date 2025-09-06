@@ -99,3 +99,11 @@ export async function signInWithGoogle(authenticated?: (user: User) => void) {
   }
   return null;
 }
+
+export async function forgetPassword(email: string) {
+  const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${window.location.origin}/reset-password`,
+  });
+  if (error) throw error;
+  return data;
+}
