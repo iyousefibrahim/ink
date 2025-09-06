@@ -54,6 +54,7 @@ export async function signUp(
 
   return authData.user;
 }
+
 export async function signInWithEmail(
   {
     email,
