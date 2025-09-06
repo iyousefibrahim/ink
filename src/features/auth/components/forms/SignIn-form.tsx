@@ -16,6 +16,7 @@ import { signInWithGoogle } from "../../apis/auth-api";
 import { useAuth } from "@/contexts/AuthContext";
 import { Input } from "@/components/ui/input";
 import Divider from "@/components/Divider";
+import Formfooter from "./Form-footer";
 
 export type SignInInputs = z.infer<typeof signInSchema>;
 
@@ -51,10 +52,6 @@ export function SignInForm({
     await signInWithGoogle(authenticated);
   }
 
-  async function handleForgotPassword() {
-    navigate("/forgot-password");
-  }
-
   return (
     <div
       className={cn("flex flex-col items-center w-full gap-6", className)}
@@ -82,13 +79,12 @@ export function SignInForm({
             <div className="flex flex-col gap-1 relative">
               <div className="flex justify-between items-center">
                 <Label htmlFor="password">Password</Label>
-                <button
-                  type="button"
-                  onClick={handleForgotPassword}
-                  className="text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors"
+                <Link
+                  to="/forgot-password"
+                  className="text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors cursor-pointer"
                 >
                   Forgot Password?
-                </button>
+                </Link>
               </div>
               <div className="relative">
                 <Input
@@ -130,15 +126,11 @@ export function SignInForm({
             </div>
 
             {/* Footer */}
-            <div className="text-center text-sm">
-              Don't have an account?{" "}
-              <Link
-                to="/signup"
-                className="underline underline-offset-4 text-blue-600 hover:text-blue-800"
-              >
-                Sign up
-              </Link>
-            </div>
+            <Formfooter
+              title="Sign Up"
+              Linkto="/signup"
+              msg="Don't have an account?"
+            />
           </form>
         </CardContent>
       </Card>

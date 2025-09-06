@@ -16,6 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import SignWithGoogle from "../SignWithGoogle";
 import { Input } from "@/components/ui/input";
 import Divider from "@/components/Divider";
+import Formfooter from "./Form-footer";
 
 export type SignUpInputs = z.infer<typeof signUpSchema>;
 
@@ -201,12 +202,11 @@ export function SignUpForm({
             <SignWithGoogle onClick={handleGoogleSignUp} />
 
             {/* Footer */}
-            <div className="mt-4 text-center text-sm">
-              Already have an account?{" "}
-              <Link to="/signin" className="underline underline-offset-4">
-                Sign in
-              </Link>
-            </div>
+            <Formfooter
+              title="Sign In"
+              Linkto="/signin"
+              msg="Already have an account?"
+            />
           </form>
         </CardContent>
       </Card>
