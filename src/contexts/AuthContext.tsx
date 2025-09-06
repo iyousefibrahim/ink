@@ -5,6 +5,7 @@ import type { User } from "@supabase/supabase-js";
 type AuthContextType = {
   user: User | null;
   authenticated: (user: User) => void;
+  isAuthenticated: boolean;
   signOut: () => void;
 };
 
@@ -19,6 +20,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     await supabase.auth.signOut();
     setUser(null);
   };
+
+  const isAuthenticated = !!user;
 
   useEffect(() => {
     const getSession = async () => {
@@ -39,7 +42,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, authenticated, signOut }}>
+    <AuthContext.Provider
+      value={{ user, authenticated, signOut, isAuthenticated }}
+    >
       {children}
     </AuthContext.Provider>
   );
