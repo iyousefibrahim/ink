@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -6,12 +7,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { forgetPassword } from "@/features/auth/apis/auth-api";
+import { forgotPassword } from "@/features/auth/apis/auth-api";
 import { forgotPasswordSchema } from "../../validations/forgotPasswordSchema";
 
 type ForgotPasswordInputs = z.infer<typeof forgotPasswordSchema>;
 
-function ForgetPasswordForm() {
+function ForgotPasswordForm() {
+  const [success, setSuccess] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -22,12 +25,14 @@ function ForgetPasswordForm() {
 
   async function onSubmit(inputs: ForgotPasswordInputs) {
     try {
-      await forgetPassword(inputs.email);
-      toast.success("Password reset email sent! Check your inbox.");
+      await forgotPassword(inputs.email);
+      setSuccess(true);
     } catch (err: Error | any) {
+      setSuccess(false);
       toast.error(err.message || "Something went wrong. Try again later.");
     }
   }
+
   return (
     <div className="flex items-center justify-center h-screen bg-accent dark:bg-background transition-colors">
       <Card className="w-full max-w-md">
@@ -38,7 +43,7 @@ function ForgetPasswordForm() {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" {...register("email")} />
+              <Input className="my-3" id="email" type="email" {...register("email")} />
               {errors.email && (
                 <p className="text-sm text-red-500">{errors.email.message}</p>
               )}
@@ -46,6 +51,12 @@ function ForgetPasswordForm() {
             <Button type="submit" disabled={isSubmitting} className="w-full">
               {isSubmitting ? "Sending..." : "Send Reset Link"}
             </Button>
+
+            {success && (
+              <p className="text-sm text-green-500 text-center">
+                A reset link has been sent. Please check your email.
+              </p>
+            )}
           </form>
         </CardContent>
       </Card>
@@ -53,4 +64,4 @@ function ForgetPasswordForm() {
   );
 }
 
-export default ForgetPasswordForm;
+export default ForgotPasswordForm;

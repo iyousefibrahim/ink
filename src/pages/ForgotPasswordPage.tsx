@@ -1,7 +1,11 @@
-import ForgetPasswordForm from "@/features/auth/components/forms/ForgetPassword-form";
+import ForgotPasswordForm from "@/features/auth/components/forms/ForgotPassword-Form";
 
 function ForgotPasswordPage() {
-  return <ForgetPasswordForm />;
+  return (
+    <div className="bg-accent dark:bg-background transition-colors">
+      <ForgotPasswordForm />
+    </div>
+  );
 }
 
 export default ForgotPasswordPage;

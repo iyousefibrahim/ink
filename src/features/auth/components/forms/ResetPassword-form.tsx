@@ -9,11 +9,13 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import supabase from "@/lib/supabaseClient";
 import { resetPasswordSchema } from "../../validations/resetPasswordSchema";
+import { Eye, EyeOff } from "lucide-react";
 
 type FormInputs = z.infer<typeof resetPasswordSchema>;
 
 function ResetPasswordForm() {
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -51,19 +53,26 @@ function ResetPasswordForm() {
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col gap-4"
           >
-            <div>
+            <div className="relative">
               <Label htmlFor="password">New Password</Label>
+
               <Input
+                className="my-3"
                 id="password"
-                type="password"
-                placeholder="Enter your new password"
+                type={showPassword ? "text" : "password"}
                 {...register("password")}
               />
-              {errors.password && (
-                <p className="text-red-500 text-sm">
-                  {errors.password.message}
-                </p>
-              )}
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? (
+                  <EyeOff className="w-5 h-5 absolute -left-5 top-0" />
+                ) : (
+                  <Eye className="w-5 h-5 absolute -left-5 top-0" />
+                )}
+              </button>
             </div>
 
             <Button type="submit" disabled={loading} className="w-full">
