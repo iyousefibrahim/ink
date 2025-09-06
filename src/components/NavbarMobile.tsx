@@ -1,13 +1,14 @@
 import { Menu } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router";
+import Logo from "./Logo";
 
 export default function NavbarMobile() {
   const [open, setOpen] = useState(false);
 
   return (
     <nav className="md:hidden p-4 bg-background shadow flex justify-between items-center dark:text-white text-black">
-      <h1 className="text-xl font-bold">MyApp</h1>
+      <Logo height={10} />
       <button onClick={() => setOpen(!open)}>
         <Menu className="h-6 w-6" />
       </button>
