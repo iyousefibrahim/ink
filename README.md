@@ -1,69 +1,47 @@
-# React + TypeScript + Vite
+# Ink
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Ink Blog is a modern blogging platform built with **React** and powered by **Supabase** as the backend. I created this project to **practice and apply what I learned in React and Supabase**. The app features a clean and responsive UI, reusable components, optimized state management with **React Query**, and smooth developer experience with **shadcn/ui** and **Tailwind CSS**.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+### Core Functionality
+- CRUD blog posts.
+- Authentication & user profiles with Supabase.
+- View posts with author info, avatars, and timestamps.
+- Like, reply, and save posts.
+- Full post details page with comments support.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### UI/UX
+- Built using **React + shadcn/ui + Tailwind CSS**.
+- Responsive design with dark mode support.
+- Skeleton loaders for smooth content loading.
+- Dropdown menus and interactive buttons with **lucide-react** icons.
+- Clean and reusable UI components.
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Forms & Validation
+- Forms built with **react-hook-form**.
+- Schema validation with **Zod** for type-safe forms.
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### Data Fetching & State
+- **React Query (TanStack)** for server state and caching.
+- Supabase as backend (Postgres + Auth).
+- Custom hooks for fetching and mutating data.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Technologies Used
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Frontend
+- React
+- React Router
+- React Query (TanStack)
+- react-hook-form + Zod
+- Tailwind CSS + shadcn/ui
+- lucide-react
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Backend
+- Supabase (Postgres + Auth + Storage)
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Status
+
+🚧 This project is still in development.  
+Currently working on post interactions (likes, comments, save), profile pages, and improving the overall user experience.
