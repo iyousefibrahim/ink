@@ -42,6 +42,20 @@ export async function getAllPosts() {
   }
   return data as PostWithProfile[];
 }
+
+export async function getPostById(postId: string) {
+  const { data, error } = await supabase
+    .from("posts_with_users")
+    .select("*")
+    .eq("id", postId)
+    .single();
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data as PostWithProfile;
+}
+
 export default async function deletePost(postId: string) {
   const { error, data } = await supabase
     .from("posts")

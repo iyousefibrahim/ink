@@ -49,7 +49,7 @@ export default function CreatePost() {
   };
 
   return (
-    <div className="flex justify-center mt-6 ">
+    <div className="flex justify-center pt-32">
       <div className="md:w-[50%] w-full">
         <div className="bg-white dark:bg-gray-900 rounded-xl shadow-md border border-gray-100 dark:border-gray-800 overflow-hidden transition-all duration-300 hover:shadow-lg">
           <div className="p-4 space-y-3">
