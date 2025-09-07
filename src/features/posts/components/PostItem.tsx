@@ -12,10 +12,12 @@ import { Edit3, MoreHorizontal, Trash2 } from "lucide-react";
 import { useDeletePost } from "../hooks/useDeletePost";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
+import { useNavigate } from "react-router";
 
 function PostItem({ post }: { post: PostWithProfile }) {
   const { mutate } = useDeletePost();
   const { user } = useAuth();
+  const navigate = useNavigate();
   const userId: string | undefined = user?.id;
 
   function handlePostDelete(postId: string) {
@@ -28,8 +30,9 @@ function PostItem({ post }: { post: PostWithProfile }) {
 
   return (
     <article
+      onClick={() => navigate(`/post/${post.id}`)}
       key={post.id}
-      className="border border-gray-200 dark:border-gray-700 p-6 rounded-xl md:w-[50%] w-full bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow duration-200"
+      className="border cursor-pointer border-gray-200 dark:border-gray-700 p-6 rounded-xl md:w-[50%] w-full bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow duration-200"
     >
       <div className="flex items-start justify-between mb-4">
         <PostUserInfo post={post} />

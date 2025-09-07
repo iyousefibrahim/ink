@@ -34,7 +34,7 @@ function ForgotPasswordForm() {
   }
 
   return (
-    <div className="flex items-center justify-center h-screen bg-accent dark:bg-background transition-colors">
+    <div className="flex items-center justify-center bg-accent dark:bg-background transition-colors">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Forgot Password</CardTitle>
@@ -43,7 +43,12 @@ function ForgotPasswordForm() {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
               <Label htmlFor="email">Email</Label>
-              <Input className="my-3" id="email" type="email" {...register("email")} />
+              <Input
+                className="my-3"
+                id="email"
+                type="email"
+                {...register("email")}
+              />
               {errors.email && (
                 <p className="text-sm text-red-500">{errors.email.message}</p>
               )}

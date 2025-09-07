@@ -10,6 +10,8 @@ import { toast } from "sonner";
 import supabase from "@/lib/supabaseClient";
 import { resetPasswordSchema } from "../../validations/resetPasswordSchema";
 import { Eye, EyeOff } from "lucide-react";
+import NavbarDesktop from "@/components/NavbarDesktop";
+import NavbarMobile from "@/components/NavbarMobile";
 
 type FormInputs = z.infer<typeof resetPasswordSchema>;
 
@@ -44,6 +46,8 @@ function ResetPasswordForm() {
 
   return (
     <div className="flex items-center justify-center h-screen">
+      <NavbarDesktop />
+      <NavbarMobile />
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-center">Reset Password</CardTitle>
@@ -55,7 +59,6 @@ function ResetPasswordForm() {
           >
             <div className="relative">
               <Label htmlFor="password">New Password</Label>
-
               <Input
                 className="my-3"
                 id="password"
@@ -73,6 +76,11 @@ function ResetPasswordForm() {
                   <Eye className="w-5 h-5 absolute -left-5 top-0" />
                 )}
               </button>
+              {errors.password && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.password.message}
+                </p>
+              )}
             </div>
 
             <Button type="submit" disabled={loading} className="w-full">

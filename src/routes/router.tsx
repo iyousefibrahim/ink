@@ -8,6 +8,9 @@ import HomePage from "@/pages/HomePage";
 import NotFoundPage from "@/pages/NotFoundPage";
 import ForgotPasswordPage from "@/pages/Auth/ForgotPasswordPage";
 import ResetPasswordPage from "@/pages/Auth/ResetPasswordPage";
+import PostPage from "@/pages/PostPage";
+import AppLayout from "@/Layouts/AppLayout";
+import AuthLayout from "@/Layouts/AuthLayout";
 
 const router = createBrowserRouter([
   {
@@ -18,10 +21,16 @@ const router = createBrowserRouter([
         path: "/",
         element: <PublicRoute />,
         children: [
-          { index: true, element: <SignInPage /> },
-          { path: "signin", element: <SignInPage /> },
-          { path: "signup", element: <SignUpPage /> },
-          { path: "forgot-password", element: <ForgotPasswordPage /> },
+          {
+            path: "",
+            element: <AuthLayout />,
+            children: [
+              { index: true, element: <SignInPage /> },
+              { path: "signin", element: <SignInPage /> },
+              { path: "signup", element: <SignUpPage /> },
+              { path: "forgot-password", element: <ForgotPasswordPage /> },
+            ],
+          },
         ],
       },
 
@@ -32,8 +41,14 @@ const router = createBrowserRouter([
         path: "",
         element: <ProtectedRoute />,
         children: [
-          { index: true, element: <HomePage /> },
-          { path: "home", element: <HomePage /> },
+          {
+            path: "/",
+            element: <AppLayout />,
+            children: [
+              { path: "home", element: <HomePage /> },
+              { path: "post/:id", element: <PostPage /> },
+            ],
+          },
 
           // { path: "profile", element: <ProfilePage /> },
         ],
