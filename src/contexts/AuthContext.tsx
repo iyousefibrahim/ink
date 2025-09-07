@@ -1,18 +1,21 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import supabase from "@/lib/supabaseClient";
 import type { User } from "@supabase/supabase-js";
+import FullScreenLoader from "@/components/FullScreenLoader";
 
 type AuthContextType = {
   user: User | null;
   authenticated: (user: User) => void;
   isAuthenticated: boolean;
   signOut: () => void;
+  loading: boolean;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const authenticated = (u: User) => setUser(u);
 
@@ -29,6 +32,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (data.session?.user) {
         setUser(data.session.user);
       }
+      setLoading(false);
     };
     getSession();
 
@@ -36,6 +40,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
+      setLoading(false);
     });
 
     return () => subscription.unsubscribe();
@@ -43,9 +48,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, authenticated, signOut, isAuthenticated }}
+      value={{ user, authenticated, signOut, isAuthenticated, loading }}
     >
-      {children}
+      {loading ? <FullScreenLoader /> : children}
     </AuthContext.Provider>
   );
 }

@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router";
 import App from "../App";
 import { PublicRoute } from "../components/PublicRoute";
-import { ProtectedRoute } from "../components/ProtectedRoute";
+import ProtectedRoute from "@/components/ProtectedRoute";
 import SignInPage from "@/pages/Auth/SignInPage";
 import SignUpPage from "@/pages/Auth/SignUpPage";
 import HomePage from "@/pages/HomePage";
@@ -32,7 +32,7 @@ const router = createBrowserRouter([
         path: "",
         element: <ProtectedRoute />,
         children: [
-          // { index: true, element: <HomePage /> },
+          { index: true, element: <HomePage /> },
           { path: "home", element: <HomePage /> },
 
           // { path: "profile", element: <ProfilePage /> },

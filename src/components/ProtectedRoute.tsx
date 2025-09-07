@@ -1,16 +1,19 @@
+import { useAuth } from "@/contexts/AuthContext";
 import { Navigate, Outlet } from "react-router";
-import { useAuth } from "../contexts/AuthContext";
+import FullScreenLoader from "./FullScreenLoader";
 
-export function ProtectedRoute({ allowedRoles }: { allowedRoles?: string[] }) {
-  const { user } = useAuth();
+function ProtectedRoute() {
+  const { isAuthenticated, loading } = useAuth();
 
-  if (!user) {
-    return <Navigate to="/signin" replace />;
+  if (loading) {
+    return <FullScreenLoader />;
   }
 
-  if (allowedRoles && !allowedRoles.includes(user.role ?? "")) {
-    return <Navigate to="/unauthorized" replace />;
+  if (!isAuthenticated) {
+    return <Navigate to="/signin" replace />;
   }
 
   return <Outlet />;
 }
+
+export default ProtectedRoute;
