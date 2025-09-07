@@ -6,11 +6,12 @@ import PostSkeletion from "./PostSkeletion";
 function PostDetails() {
   const { id: postId } = useParams<{ id: string | undefined }>();
   const { data: post, error, isLoading } = usePostById(postId);
-  if (error) {
-    return <p className="text-center text-red-500">Failed to load post.</p>;
-  }
+
   if (isLoading) {
     return <PostSkeletion />;
+  }
+  if (error) {
+    return <p className="text-center text-red-500">Failed to load post.</p>;
   }
 
   if (!post) {

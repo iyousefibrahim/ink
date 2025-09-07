@@ -3,10 +3,10 @@ import PostsFeed from "@/features/posts/components/PostsFeed";
 
 function HomePage() {
   return (
-    <>
+    <main>
       <CreatePost />
       <PostsFeed />
-    </>
+    </main>
   );
 }
 
