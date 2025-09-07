@@ -9,8 +9,23 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Edit3, MoreHorizontal, Trash2 } from "lucide-react";
+import { useDeletePost } from "../hooks/useDeletePost";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
 
 function PostItem({ post }: { post: PostWithProfile }) {
+  const { mutate } = useDeletePost();
+  const { user } = useAuth();
+  const userId: string | undefined = user?.id;
+
+  function handlePostDelete(postId: string) {
+    mutate(postId, {
+      onSuccess: () => {
+        toast.success("Post deleted successfully!");
+      },
+    });
+  }
+
   return (
     <article
       key={post.id}
@@ -18,29 +33,38 @@ function PostItem({ post }: { post: PostWithProfile }) {
     >
       <div className="flex items-start justify-between mb-4">
         <PostUserInfo post={post} />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-8 w-8 p-0 text-gray-400 hover:text-gray-600 
+        {post.user_id === userId ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-8 w-8 p-0 text-gray-400 hover:text-gray-600 
                  dark:hover:text-gray-300 hover:bg-gray-100 
                  dark:hover:bg-gray-700"
-            >
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-48">
-            <DropdownMenuItem>
-              <Edit3 className="mr-2 h-4 w-4" />
-              Edit post
-            </DropdownMenuItem>
-            <DropdownMenuItem className="text-red-600 dark:text-red-400">
-              <Trash2 className="mr-2 h-4 w-4" />
-              Delete post
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+              >
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuItem>
+                <Edit3 className="mr-2 h-4 w-4" />
+                Edit post
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => {
+                  handlePostDelete(post.id);
+                }}
+                className="text-red-600 dark:text-red-400"
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                Delete post
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          ""
+        )}
       </div>
 
       <div className="space-y-3">
