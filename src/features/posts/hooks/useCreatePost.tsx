@@ -21,7 +21,7 @@ function usePost() {
     },
     onSuccess: () => {
       toast.success("Post created successfully!");
-      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      queryClient.invalidateQueries({ queryKey: ["posts_with_users"] });
     },
     onError: (error) => {
       toast.error(`Error creating post: ${error.message}`);

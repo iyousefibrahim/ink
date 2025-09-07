@@ -1,5 +1,3 @@
-// PostsFeed.tsx
-import { useQuery } from "@tanstack/react-query";
 import {
   MoreHorizontal,
   Trash2,
@@ -8,8 +6,6 @@ import {
   MessageCircle,
   Bookmark,
 } from "lucide-react";
-import supabase from "@/lib/supabaseClient";
-import { Skeleton } from "@/components/ui/skeleton";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,59 +13,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-
-// NEEDS A LOT OF REFACTOR HERE :_) !
-
-export type PostWithProfile = {
-  id: string;
-  user_id: string;
-  content: string;
-  image_url?: string;
-  created_at: string;
-  username: string | null;
-  full_name: string | null;
-  avatar_url: string | null;
-};
-
-async function getAllPosts() {
-  const { data, error } = await supabase.from("posts_with_users").select("*");
-  if (error) {
-    throw new Error(error.message);
-  }
-  return data as PostWithProfile[];
-}
-
-// Skeleton component for loading state
-function PostSkeleton() {
-  return (
-    <div className="border border-gray-200 dark:border-gray-700 p-6 rounded-xl bg-white dark:bg-gray-800 shadow-sm">
-      <div className="flex items-start gap-3 mb-4">
-        <Skeleton className="w-10 h-10 rounded-full" />
-        <div className="flex-1 space-y-2">
-          <Skeleton className="h-4 w-32" />
-          <Skeleton className="h-3 w-24" />
-        </div>
-        <Skeleton className="w-8 h-8 rounded-full" />
-      </div>
-      <div className="space-y-2">
-        <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-4 w-3/4" />
-        <Skeleton className="h-4 w-1/2" />
-      </div>
-      <Skeleton className="h-48 w-full mt-4 rounded-lg" />
-    </div>
-  );
-}
+import PostSkeletion from "./PostSkeletion";
+import usePosts from "../hooks/usePosts";
+import { formatTimeAgo } from "@/utils/formatTimeAgo";
+import ErrorPost from "./ErrorPost";
+import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 
 export default function PostsFeed() {
-  const {
-    data: posts,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["posts-with-profiles"],
-    queryFn: () => getAllPosts(),
-  });
+  const { data: posts, isPending, error } = usePosts();
 
   const handleDeletePost = (postId: string) => {
     // TODO: Implement delete functionality
@@ -81,37 +32,18 @@ export default function PostsFeed() {
     console.log("Update post:", postId);
   };
 
-  const formatTimeAgo = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-
-    if (diffInSeconds < 60) return "now";
-    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m`;
-    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h`;
-    if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d`;
-
-    return date.toLocaleDateString();
-  };
-
-  if (isLoading) {
+  if (isPending) {
     return (
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col items-center py-15 gap-10 ">
         {Array.from({ length: 3 }).map((_, index) => (
-          <PostSkeleton key={index} />
+          <PostSkeletion key={index} />
         ))}
       </div>
     );
   }
 
   if (error) {
-    return (
-      <div className="border border-red-200 dark:border-red-800 p-6 rounded-xl bg-red-50 dark:bg-red-900/10">
-        <p className="text-red-600 dark:text-red-400 font-medium">
-          Error loading posts: {(error as Error).message}
-        </p>
-      </div>
-    );
+    return <ErrorPost error={error} />;
   }
 
   return (
@@ -129,11 +61,16 @@ export default function PostsFeed() {
               <div className="flex items-center gap-3 flex-1 min-w-0">
                 <div className="relative flex-shrink-0">
                   {post.avatar_url ? (
-                    <img
-                      src={post.avatar_url}
-                      alt={displayName}
-                      className="w-10 h-10 rounded-full object-cover ring-2 ring-gray-100 dark:ring-gray-700"
-                    />
+                    <Avatar>
+                      <AvatarImage
+                        className="w-10 h-10 rounded-full object-cover ring-2 ring-gray-100 dark:ring-gray-700"
+                        src={post.avatar_url}
+                        alt={displayName}
+                      />
+                      <AvatarFallback>
+                        {displayName.charAt(0).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
                   ) : (
                     <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center ring-2 ring-gray-100 dark:ring-gray-700">
                       <span className="text-sm font-semibold text-white">

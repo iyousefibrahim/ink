@@ -1,5 +1,5 @@
 import supabase from "@/lib/supabaseClient";
-import type { postInput } from "../types";
+import type { postInput, PostWithProfile } from "../types";
 
 export async function createPost(
   post: postInput,
@@ -30,4 +30,15 @@ export async function createPost(
   } catch (err: any) {
     throw new Error(err.message || "Failed to create post");
   }
+}
+
+export async function getAllPosts() {
+  const { data, error } = await supabase
+    .from("posts_with_users")
+    .select("*")
+    .order("created_at", { ascending: false });
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data as PostWithProfile[];
 }
